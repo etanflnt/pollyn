@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.30/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.30",
+  "version": "{{VERSION}}",
+  "id": "{{APP_ID}}",
+  "developer": {
+    "name": "FLNT",
+    "websiteUrl": "https://flnt.io",
+    "privacyUrl": "https://flnt.io",
+    "termsOfUseUrl": "https://flnt.io"
+  },
+  "name": {
+    "short": "Pollyn",
+    "full": "Pollyn - polls, suggestions & raffles for your org"
+  },
+  "description": {
+    "short": "Get everyone's vote: quick polls, suggestions, live results and raffles.",
+    "full": "Pollyn makes it easy to get everyone's vote in your organization, from the lunch order to serious decisions and fun events. Build a poll step by step with single or multiple choice, rating and free-text questions, add images or videos for context, and let voters suggest their own options. Voters sign in with their work account (Teams single sign-on), answer one question at a time on any device, and can pick up where they left off. Choose whether a poll is exclusive to your organization or open to anyone with the link, and decide who sees results, vote counts and voter names. When it is time to celebrate, run a spinner wheel, raffle draw or entry-count board with fair, server-side random draws."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#0B7A6E",
+  "staticTabs": [
+    {
+      "entityId": "polls",
+      "name": "Polls",
+      "contentUrl": "https://{{HOST}}/",
+      "websiteUrl": "https://{{HOST}}/",
+      "scopes": ["personal"]
+    },
+    {
+      "entityId": "about",
+      "scopes": ["personal"]
+    }
+  ],
+  "permissions": ["identity"],
+  "validDomains": ["{{HOST}}"],
+  "webApplicationInfo": {
+    "id": "{{CLIENT_ID}}",
+    "resource": "api://{{HOST}}/{{CLIENT_ID}}"
+  }
+}

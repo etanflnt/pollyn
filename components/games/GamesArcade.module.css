@@ -1,0 +1,123 @@
+/* Randomiser arcade layout, source panel, history, winner dialog. Owner: Woz. */
+.head { display: flex; flex-direction: column; gap: var(--space-1); margin-bottom: var(--space-5); }
+
+.layout {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "source" "stage" "history";
+}
+@media (min-width: 980px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-areas: "stage source" "stage history";
+    grid-template-rows: auto 1fr;
+    align-items: start;
+  }
+}
+.source { grid-area: source; min-width: 0; }
+.stage { grid-area: stage; min-width: 0; }
+.historyArea { grid-area: history; min-width: 0; }
+
+.fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-4); }
+.fieldset:disabled { opacity: 0.85; }
+.fieldset:disabled :global(.tp-seg), .fieldset:disabled button { cursor: not-allowed; }
+
+.srOnly {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Panels ---------- */
+.panel { display: flex; flex-direction: column; gap: var(--space-4); }
+.panelTitle { display: flex; flex-direction: column; gap: 2px; padding: 0; }
+.sourceBody { display: flex; flex-direction: column; gap: var(--space-3); }
+.code { font-family: var(--font-mono); font-size: 0.95em; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--ink-2); }
+
+.previewHead { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); flex-wrap: wrap; }
+.preview {
+  list-style: none; margin: 0; padding: 4px;
+  display: flex; flex-direction: column; gap: 2px;
+  max-height: 220px; overflow: auto; overscroll-behavior: contain;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-md);
+}
+.previewRow { display: flex; align-items: center; gap: var(--space-2); padding: 6px 8px; border-radius: var(--radius-xs); }
+.previewRow:nth-child(odd) { background: var(--surface); }
+.previewName { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
+.ticketChip {
+  flex: none; font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: var(--fw-bold);
+  padding: 2px 8px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent);
+}
+.voterCount {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-md);
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.voterNum { font-size: var(--fs-2xl); font-weight: var(--fw-heavy); line-height: 1; color: var(--accent); }
+
+.winnersRow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; padding-top: var(--space-2); border-top: 1px solid var(--border); }
+.stepper { display: inline-flex; align-items: center; gap: var(--space-2); }
+.stepValue { min-width: 2ch; text-align: center; font-size: var(--fs-lg); font-weight: var(--fw-heavy); font-variant-numeric: tabular-nums; }
+
+/* ---------- Stage ---------- */
+.stageTop { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-4); }
+.stageTop .fieldset { flex-direction: row; }
+.tabLabel { display: inline-flex; align-items: center; gap: 6px; }
+.gameArea { min-height: 240px; display: flex; flex-direction: column; justify-content: center; }
+.actionBar { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); margin-top: var(--space-5); text-align: center; }
+.linkBtn { border: 0; background: none; padding: 0; color: var(--accent); font-weight: var(--fw-bold); cursor: pointer; font-size: inherit; }
+.linkBtn:hover { text-decoration: underline; }
+.fair {
+  display: flex; align-items: flex-start; justify-content: center; gap: 8px;
+  margin: var(--space-5) auto 0; max-width: 52ch;
+  font-size: var(--fs-xs); color: var(--muted); text-align: left;
+}
+.fair svg { flex: none; margin-top: 1px; color: var(--accent); }
+
+@media (max-width: 420px) {
+  .stageTop { align-items: flex-start; }
+  .tabLabel svg { display: none; }
+}
+
+/* ---------- History ---------- */
+.history { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.historyItem {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: var(--space-3); align-items: start;
+  padding: var(--space-3); border-radius: var(--radius-md);
+  background: var(--surface); border: 1px solid var(--border);
+  animation: tp-rise var(--dur-slow) var(--ease-out);
+}
+.historyIcon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.historyMain { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.historyMeta { display: flex; flex-wrap: wrap; gap: 4px; font-size: var(--fs-sm); }
+.historyWinners { display: flex; flex-wrap: wrap; gap: 4px; }
+.winnerChip {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
+  padding: 2px 10px 2px 3px; border-radius: var(--radius-pill);
+  background: var(--accent-2-soft); color: var(--ink); font-size: var(--fs-xs); font-weight: var(--fw-bold);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.winnerChip b {
+  flex: none; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--accent-2); color: var(--surface); font-size: 10px;
+}
+
+/* ---------- Winner dialog ---------- */
+.winner { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center; padding: var(--space-2) 0 var(--space-4); }
+.trophy {
+  width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--warn-soft); color: var(--warn);
+  animation: trophy 600ms var(--ease-out) both;
+}
+@keyframes trophy { from { transform: scale(0.4) rotate(-20deg); opacity: 0; } 60% { transform: scale(1.12) rotate(6deg); opacity: 1; } }
+.winnerName {
+  font-size: clamp(1.75rem, 7vw, 2.5rem); font-weight: var(--fw-heavy); letter-spacing: var(--tracking-display); line-height: 1.1;
+  max-width: 100%; overflow-wrap: anywhere;
+  animation: tp-pop var(--dur-slow) var(--ease-out) 120ms both;
+}
+.winnerList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.winnerList li { display: flex; align-items: center; gap: var(--space-3); padding: 8px 12px; border-radius: var(--radius-sm); background: var(--surface-2); }
+.winnerList .winnerListCurrent { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.winnerList .winnerListPending { opacity: 0.55; }
+.place { flex: none; min-width: 3ch; font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--fw-bold); color: var(--muted); }
+.winnerListName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: var(--fw-bold); }

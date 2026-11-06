@@ -1,0 +1,10 @@
+node_modules
+.next
+data/*.db*
+data/uploads
+data/pglite
+.env
+.env.local
+*.tsbuildinfo
+next-env.d.ts
+appPackage/build
