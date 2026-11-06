@@ -55,7 +55,18 @@ export function getEnv(): ServerEnv {
     sessionSecret,
     pollCreators: str("POLL_CREATORS").toLowerCase() === "admins" ? "admins" : "everyone",
     adminEmails: str("ADMIN_EMAILS").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean),
-    databaseUrl: str("DATABASE_URL") || str("POSTGRES_URL"),
+    databaseUrl: findDatabaseUrl(),
     dbPath: str("TP_DB_PATH") || path.join(cwd, "data", "pglite"),
   };
+}
+
+/** DATABASE_URL / POSTGRES_URL, or a prefixed variant (Vercel's Storage "custom prefix", e.g. STORAGE_DATABASE_URL). */
+function findDatabaseUrl(): string {
+  const exact = (process.env.DATABASE_URL || process.env.POSTGRES_URL || "").trim();
+  if (exact) return exact;
+  for (const suffix of ["_DATABASE_URL", "_POSTGRES_URL"]) {
+    const key = Object.keys(process.env).sort().find((k) => k.endsWith(suffix) && process.env[k]?.trim());
+    if (key) return process.env[key]!.trim();
+  }
+  return "";
 }
