@@ -9,8 +9,7 @@ const redact = (s: string) => s.replace(/postgres(ql)?:\/\/[^\s"']+/gi, "postgre
 
 export async function GET() {
   const env = getEnv();
-  const dbVars = Object.keys(process.env).filter((k) => /DATABASE_URL|POSTGRES_URL|PGHOST|NEON/i.test(k)).sort(); // names only, never values
-  const info = { databaseUrlSet: Boolean(env.databaseUrl), onVercel: Boolean(process.env.VERCEL), vercelEnv: process.env.VERCEL_ENV ?? null, dbVars };
+  const info = { databaseUrlSet: Boolean(env.databaseUrl), onVercel: Boolean(process.env.VERCEL) };
   try {
     const kind = await dbKind();
     const row = await queryOne<{ n: number }>("SELECT COUNT(*)::int AS n FROM polls");
